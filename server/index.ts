@@ -1,10 +1,17 @@
 import express from "express";
+import router from "./routes/auth.js";
+import type { Request, Response } from "express";
+import cors from 'cors';
+import { getObject } from './controllers/aws.js'
 
-const app = express();
+const app: express.Application = express();
 
-app.get("/", (req, res) => {
-	res.send("This is a new manufacturer for me");
-	console.log("response sent");
+app.use(cors());
+app.use(router);
+
+app.get('/', async (req: Request, res: Response) => {
+	console.log("Getting");
+	await getObject(req, res);
 })
 
 app.listen(3030, () => {
