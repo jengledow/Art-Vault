@@ -1,16 +1,34 @@
 <script setup lang="ts">
-  import { login } from './io.ts/auth';
-  import { onUpload } from './io.ts/upload';
-  import FileUpload from 'primevue/fileupload';
+  import AddProjectDialog from './components/AddProjectDialog.vue';
+  import DynamicDialog from 'primevue/dynamicdialog';
+  import Panel from 'primevue/panel'
+  import { ref } from 'vue';
+  import { useDialog } from 'primevue';
+
+  const projects = ref([]);
+  const dialog = useDialog();
+
+  const addProject = () => {
+    console.log("clicked");
+    dialog.open(AddProjectDialog, {});
+  }
 </script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
-  <FileUpload mode='basic' name="img" :auto="true" url="http://localhost:3030/file/upload" accept="image/*" :maxFIleSize="1000000" @upload="onUpload" />
+  <div>
+    <Panel v-for="project in projects">
+      <p>{{ project }}</p>
+    </Panel>
+    <Panel>
+      <h1 @click="addProject()">+</h1>
+    </Panel>
+  </div>
+  
+  <DynamicDialog />
 </template>
 
-<style scoped></style>
+<style lang="scss">
+  html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+</style>

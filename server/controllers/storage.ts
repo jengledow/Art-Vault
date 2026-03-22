@@ -47,14 +47,6 @@ async function uploadPhoto(req: Request, res: Response): Promise<any> {
 	}
 }
 
-async function getPhoto(filename: string): Promise<any> {
-	const bucket = storage.bucket(bucketName);
-	const file = bucket.file(filename);	
-
-	console.log(file);
-}
-
 export {
-	getPhoto,
 	uploadPhoto
 }
