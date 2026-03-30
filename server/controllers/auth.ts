@@ -5,6 +5,10 @@ async function login(req: Request, res: Response){
     res.send("logging in");
 }
 
+function createNewUser(){
+
+}
+
 export {
     login
 }

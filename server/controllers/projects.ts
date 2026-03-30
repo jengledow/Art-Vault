@@ -1,9 +1,28 @@
 
 import { type Request, type Response } from "express";
+import { DatabaseSync, StatementSync } from "node:sqlite";
+import { getEnvVariable } from "./utils.js";
 
-async function uploadPhoto(req: Request, res: Response): Promise<any> {
+let database: DatabaseSync = new DatabaseSync(`database/${getEnvVariable('DATABASE_NAME')}`);
+
+async function add(req: Request, res: Response): Promise<any> {
+	let insert: StatementSync = database.prepare(`INSERT INTO projects (userID, timeAdded, timeUpdated, name) VALUES (?, ?, ?, ?)`)
+	insert.run(1, Date.now(), Date.now(), req.body.projectName);
+	res.status(200).json({
+		success: true
+	})
+}
+
+async function getAll(req: Request, res: Response): Promise<any> {
+	let getAll: StatementSync = database.prepare(`SELECT * FROM projects WHERE userID=?`);
+	let projects: any[] = getAll.all(1);
+	console.log(projects);
+	res.status(200).json({
+		projects: projects
+	})
 }
 
 export {
-	uploadPhoto
+	add,
+	getAll
 }
