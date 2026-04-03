@@ -26,6 +26,20 @@ async function getProject(projectId: number) {
 	return res;
 }
 
+async function getProgressPhotos(projectId: number) {
+  let res: any = await fetch("http://localhost:3030/project/getProgressPhotos", {
+    method: "POST",
+    headers: headers,
+		body: JSON.stringify({
+			projectId: projectId
+    })
+  });
+
+  res = await res.json();
+
+  return res.photos;
+}
+
 async function getAllProjects() {
   let projects: Project[] = [];
   let res: any = await fetch("http://localhost:3030/project/getAll", {
@@ -41,6 +55,7 @@ async function getAllProjects() {
 
 export {
 	addProject,
+	getProgressPhotos,
 	getAllProjects,
 	getProject
 };

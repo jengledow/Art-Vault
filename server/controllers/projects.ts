@@ -36,8 +36,22 @@ async function getProject(req: Request, res: Response): Promise<any> {
 
 	res.status(200).json(project[0]);
 }
+
+async function getProgressPhotos(req: Request, res: Response): Promise<any> {
+  let getOne: StatementSync = database.prepare(
+    `SELECT * FROM images WHERE projectId=?`,
+  );
+
+	let photos: any = getOne.all(1);
+
+	res.status(200).json({
+		photos: ["this is a photo", "this is also a photo"]
+	});
+}
+
 export {
 	add,
 	getAll,
+	getProgressPhotos,
 	getProject
 };
