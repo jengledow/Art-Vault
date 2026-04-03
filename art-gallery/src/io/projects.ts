@@ -1,33 +1,46 @@
-import type { Project } from '../types/Project';
+import type { Project } from "../types/Project";
 const headers: Headers = new Headers({
-	'Content-Type': 'application/json'
+  "Content-Type": "application/json",
 });
 
-async function addProject(projectName: string){
-	console.log(projectName);
-	let res = await fetch("http://localhost:3030/project/add", {
-		method: "POST",
-		headers: headers, 
-		body: JSON.stringify({
-			projectName: projectName
-		}) 
-	})
-
-	console.log(res);
+async function addProject(projectName: string) {
+  let res = await fetch("http://localhost:3030/project/add", {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify({
+      projectName: projectName,
+    }),
+  });
 }
 
-async function getAllProjects(){
-	let res: any = await fetch("http://localhost:3030/project/getAll", {
-		method: "POST",
-		headers: headers,
-	});
+async function getProject(projectId: number) {
+  let res = await fetch("http://localhost:3030/project/getProject", {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify({
+      projectId: projectId,
+    }),
+  });
 
 	res = await res.json();
+	return res;
+}
 
-	return res.projects;
+async function getAllProjects() {
+  let projects: Project[] = [];
+  let res: any = await fetch("http://localhost:3030/project/getAll", {
+    method: "POST",
+    headers: headers,
+  });
+
+  res = await res.json();
+  projects = res.projects;
+
+  return projects;
 }
 
 export {
 	addProject,
-	getAllProjects
-}
+	getAllProjects,
+	getProject
+};

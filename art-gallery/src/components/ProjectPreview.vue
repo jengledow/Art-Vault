@@ -1,20 +1,23 @@
 <script setup lang="ts">
-	import Panel from 'primevue/panel'
+	import Card from "primevue/card";
+	import type { ProjectPreview } from "../types/ProjectPreview.ts";
+	import { ref } from 'vue';
 
 	const props = defineProps<{
-		name: string,
-		referencePhoto?: string,
-		timeAdded: number
+		project: ProjectPreview
 	}>();
-	console.log(props);
 </script>
 
 <template>
-	<Panel>
-		<h2>{{ props.name }}</h2>
-		<img :src="props.referencePhoto" alt="Reference Photo not defined" />
-		<p>{{ props.timeAdded }}</p>
-	</Panel>
+	<Card class="project">
+		<template #title>{{ project.name }}</template>
+		<template #content>
+			<img :src="props.referencePhoto" alt="Reference Photo not defined" />
+		</template>
+		<template #footer>
+			<p>{{ props.timeAdded }}</p>
+		</template>
+	</Card>
 </template>
 
 <style lang="scss" scoped>
