@@ -1,7 +1,6 @@
 <script setup lang="ts">
 	import Card from "primevue/card";
 	import type { ProjectPreview } from "../types/ProjectPreview.ts";
-	import { ref } from 'vue';
 
 	const props = defineProps<{
 		project: ProjectPreview
@@ -12,10 +11,10 @@
 	<Card class="project">
 		<template #title>{{ project.name }}</template>
 		<template #content>
-			<img :src="props.referencePhoto" alt="Reference Photo not defined" />
+			<img :src="project.referencePhoto" alt="Reference Photo not defined" />
 		</template>
 		<template #footer>
-			<p>{{ props.timeAdded }}</p>
+			<p>{{ project.timeAdded }}</p>
 		</template>
 	</Card>
 </template>

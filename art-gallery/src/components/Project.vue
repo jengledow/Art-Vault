@@ -1,29 +1,31 @@
 <script setup lang="ts">
-	import Card from 'primevue/card';
 	import { getProject, getProgressPhotos } from '../io/projects.ts';
-	import Panel from 'primevue/panel';
 	import type { Project } from '../types/Project.ts';
 	import { useRoute } from 'vue-router';
-	import { ref, watch } from 'vue';
+	import { ref } from 'vue';
 
-	const project = ref<Project>({});
+	const project = ref<Project>({
+		name: '',
+		timeAdded: 0,
+		timeUpdated: 0,
+		projectID: 1,
+		userID: 1
+	});
 	const images = ref<string[]>([]);
 	const loading = ref(false);
 	const route = useRoute();
 
-	const loadProject = async (id): any => {
-		loading.value = true;
+	const loadProject = async () => {
 		try {
+			let id: string = route.params.id as string;
 			project.value = await getProject(id);
 			images.value = await getProgressPhotos(id);
 		} catch (e) {
 			console.log(e);
-		} finally {
-			loading.value = false;
 		}
-	};
+	}
 
-	watch(() => route.params.id, loadProject, { immediate: true });
+	loadProject();
 </script>
 
 <template>

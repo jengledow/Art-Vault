@@ -13,7 +13,7 @@ async function addProject(projectName: string) {
   });
 }
 
-async function getProject(projectId: number) {
+async function getProject<Project>(projectId: string): Promise<Project> {
   let res = await fetch("http://localhost:3030/project/getProject", {
     method: "POST",
     headers: headers,
@@ -23,10 +23,10 @@ async function getProject(projectId: number) {
   });
 
 	res = await res.json();
-	return res;
+	return res as Project;
 }
 
-async function getProgressPhotos(projectId: number) {
+async function getProgressPhotos(projectId: string) {
   let res: any = await fetch("http://localhost:3030/project/getProgressPhotos", {
     method: "POST",
     headers: headers,
