@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import FileUpload from 'primevue/fileupload';
 	import { getProject, getProgressPhotos } from '../io/projects.ts';
 	import type { Project } from '../types/Project.ts';
 	import { useRoute } from 'vue-router';
@@ -25,6 +26,10 @@
 		}
 	}
 
+	const addReferencePhoto = async () => {
+
+	}
+
 	loadProject();
 </script>
 
@@ -33,7 +38,8 @@
 		<div class="header">
 			<h1>{{ project.name }}</h1>
 			<img v-if="project.referencePhoto" :src="project.referencePhoto" />
-			<img v-else src="../assets/add.svg" />
+
+			<FileUpload v-else mode="basic" name="img" url="http://localhost:3030/file/upload" accept="image/*" :maxFileSize="100000" @upload="" :auto="true" chooseLabel="Add Reference" />
 		</div>
 
 		<div class="progressPhotos">

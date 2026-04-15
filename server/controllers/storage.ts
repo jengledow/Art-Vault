@@ -9,8 +9,7 @@ const keyFilename: string = getEnvVariable('KEY_FILE_NAME');
 const storage: Storage = new Storage({
 	projectId: projectId,
 	keyFilename: keyFilename
-}) 
-
+})
 
 async function uploadPhoto(req: Request, res: Response): Promise<any> {
 	let filename: string = '';

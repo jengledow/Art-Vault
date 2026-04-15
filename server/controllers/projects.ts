@@ -21,7 +21,6 @@ async function getAll(req: Request, res: Response): Promise<any> {
     `SELECT projectId, referencePhoto, name, timeAdded FROM projects WHERE userID=?`,
   );
   let projects: any[] = getAll.all(1);
-  console.log(projects);
   res.status(200).json({
     projects: projects,
   });

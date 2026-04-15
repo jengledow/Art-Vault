@@ -12,7 +12,6 @@
 	};
 
 	const addProjectAndRedirect = () => {
-		console.log("yayeet");
 		addProject(projectName);
 		navigate();
 	}
