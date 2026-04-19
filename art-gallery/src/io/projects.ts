@@ -1,61 +1,58 @@
 import type { Project } from "../types/Project";
-const headers: Headers = new Headers({
-  "Content-Type": "application/json",
-});
+import { post } from "./io";
 
 async function addProject(projectName: string) {
-  let res = await fetch("http://localhost:3030/project/add", {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify({
-      projectName: projectName,
-    }),
+  await post('project/add', {
+    projectName: projectName
   });
 }
 
-async function getProject<Project>(projectId: string): Promise<Project> {
-  let res = await fetch("http://localhost:3030/project/getProject", {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify({
-      projectId: projectId,
-    }),
+async function getProject<Project>(projectId: number): Promise<Project> {
+  let res: any = await post('project/getProject', {
+    projectId: projectId
   });
+  console.log(res);
 
-	res = await res.json();
 	return res as Project;
 }
 
-async function getProgressPhotos(projectId: string) {
-  let res: any = await fetch("http://localhost:3030/project/getProgressPhotos", {
-    method: "POST",
-    headers: headers,
-		body: JSON.stringify({
-			projectId: projectId
-    })
-  });
+async function linkReferencePhoto(photoUrl: string, projectId: number): Promise<boolean> {
+  let res: any = post('project/linkReferencePhoto', {
+    projectId: projectId,
+    photoUrl: photoUrl
+  })
 
-  res = await res.json();
+  if(res.success){
+    return true;
+  }
 
-  return res.photos;
+  return false;
 }
 
-async function getAllProjects() {
-  let projects: Project[] = [];
-  let res: any = await fetch("http://localhost:3030/project/getAll", {
-    method: "POST",
-    headers: headers,
-  });
+async function getProgressPhotos(projectId: string) {
+}
 
-  res = await res.json();
+async function getAllProjects(): Promise<Project[]> {
+  let projects: Project[] = [];
+
+  let res: any = await post('project/getAll', {
+    userId: 1
+  })
+
   projects = res.projects;
 
   return projects;
 }
 
+async function deleteProject(projectId: number): Promise<any> {
+  
+}
+
 export {
 	addProject,
+  deleteProject,
 	getProgressPhotos,
 	getAllProjects,
-	getProject
+	getProject,
+  linkReferencePhoto
 };

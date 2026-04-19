@@ -1,0 +1,2 @@
+- project delete
+- progress photos

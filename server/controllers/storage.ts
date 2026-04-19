@@ -1,6 +1,7 @@
 import { Bucket, Storage } from "@google-cloud/storage";
 import { getEnvVariable } from "./utils.js";
 import { type Request, type Response } from "express";
+import { v4 } from "uuid";
 
 const bucketName: string = getEnvVariable('BUCKET_NAME');
 const projectId: string = getEnvVariable('PROJECT_ID');
@@ -11,7 +12,49 @@ const storage: Storage = new Storage({
 	keyFilename: keyFilename
 })
 
-async function uploadPhoto(req: Request, res: Response): Promise<any> {
+async function uploadReferencePhoto(req: Request, res: Response): Promise<any> {
+	if(!req.file){
+		res.status(401).json({
+			success: false,
+			error: "no file specified"
+		})
+
+		return;
+	}
+
+	let extension: string | undefined = req.file.originalname.split('.')[1];
+
+	if(extension == undefined){
+		res.status(401).json({
+			success: false,
+			error: "file doesn't have a proper extnesion"
+		})
+
+		return;
+	}
+
+	let filename: string = `${v4()}.${extension}`;
+
+	try {
+		const bucket: Bucket = storage.bucket(bucketName);
+		const blob = bucket.file(filename);
+		const blobStream = blob.createWriteStream();
+
+		blobStream.end(req.file.buffer);
+
+		res.status(201).json({
+			success: true,
+			publicUrl: `https://storage.googleapis.com/${bucketName}/${blob.name}`
+		})
+	} catch (e) {
+		res.status(401).json({
+			msg: "hell no white boy",
+			error: e
+		})
+	}
+}
+
+async function uploadProgressPhoto(req: Request, res: Response): Promise<any> {
 	let filename: string = '';
 	if(req.file){
 		filename = req.file.originalname;
@@ -44,8 +87,9 @@ async function uploadPhoto(req: Request, res: Response): Promise<any> {
 			error: e
 		})
 	}
+
 }
 
 export {
-	uploadPhoto
+	uploadReferencePhoto
 }
