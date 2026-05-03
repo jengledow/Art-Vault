@@ -1,10 +1,12 @@
+import type { ServerResponse } from "@/types/ServerResponse";
+
 const headers: Headers = new Headers({
   "Content-Type": "application/json",
 });
 
 const url: string = "http://localhost:3030";
 
-async function post(route: string, body: any): Promise<any> {
+async function post(route: string, body: any): Promise<ServerResponse> {
 	if(route[0] == '/'){
 		route = route.substring(1);
 	}
@@ -34,5 +36,6 @@ async function deleteMethod(route: string): Promise<any> {
 }
 
 export {
-	post
+	post,
+	deleteMethod
 }

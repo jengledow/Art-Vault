@@ -4,6 +4,7 @@
 	import type { Project } from '@/types/Project.ts';
 	import { ref } from 'vue';
 	import { short } from '@/utils/dates.ts';
+import type { ServerResponse } from '@/types/ServerResponse';
 
 	const props = defineProps<{
 		id: number
@@ -29,9 +30,10 @@
 
 	const addReferencePhoto = async (event: FileUploadUploadEvent) => {
 		let url: string = JSON.parse(event.xhr.response).publicUrl;
-		let res: any = await linkReferencePhoto(url, props.id);
+		let res: ServerResponse = await linkReferencePhoto(url, props.id);
+		console.log(res);
 		if(res.success){
-			loadProject();
+			await loadProject();
 		}
 	}
 

@@ -32,11 +32,12 @@
 				:project="project"
 				@click="navigate(project.projectID)"
 				class="project"
+				v-on:delete="loadProjects()"
 			/>
 		</template>
 		<Card class="project add">
 			<template #content>
-				<AddProjectDialog></AddProjectDialog>
+				<AddProjectDialog />
 			</template>
 		</Card>
 	</div>

@@ -1,10 +1,13 @@
 import type { Project } from "../types/Project";
-import { post } from "./io";
+import type { ServerResponse } from "@/types/ServerResponse";
+import { deleteMethod, post } from "./io";
 
-async function addProject(projectName: string) {
-  await post('project/add', {
+async function addProject(projectName: string): Promise<ServerResponse> {
+  let res: ServerResponse = await post('project/add', {
     projectName: projectName
   });
+  
+  return res;
 }
 
 async function getProject<Project>(projectId: number): Promise<Project> {
@@ -16,17 +19,13 @@ async function getProject<Project>(projectId: number): Promise<Project> {
 	return res as Project;
 }
 
-async function linkReferencePhoto(photoUrl: string, projectId: number): Promise<boolean> {
-  let res: any = post('project/linkReferencePhoto', {
+async function linkReferencePhoto(photoUrl: string, projectId: number): Promise<ServerResponse> {
+  let res: ServerResponse = await post('project/linkReferencePhoto', {
     projectId: projectId,
     photoUrl: photoUrl
-  })
+  });
 
-  if(res.success){
-    return true;
-  }
-
-  return false;
+  return res;
 }
 
 async function getProgressPhotos(projectId: string) {
@@ -45,7 +44,7 @@ async function getAllProjects(): Promise<Project[]> {
 }
 
 async function deleteProject(projectId: number): Promise<any> {
-  
+  let res: any = await deleteMethod(`project/delete/${projectId}`); 
 }
 
 export {

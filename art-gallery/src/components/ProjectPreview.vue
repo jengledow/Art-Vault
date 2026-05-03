@@ -3,12 +3,19 @@
 	import Card from "primevue/card";
 	import type { ProjectPreview } from "../types/ProjectPreview.ts";
 	import { short } from '../utils/dates.ts';
+	import { deleteProject } from '@/io/projects.ts';
 
 	const props = defineProps<{
 		project: ProjectPreview
 	}>();
+	
+	const emit = defineEmits(['delete']);
 
-	const deleteProject = async () => {
+	const delProject = async (event: Event) => {
+		event.preventDefault();
+		event.stopPropagation();
+		deleteProject(props.project.projectID);
+		emit('delete');
 	}
 </script>
 
@@ -20,7 +27,7 @@
 		</template>
 		<template #footer>
 			<p>{{ short(project.timeAdded) }}</p>
-			<Button @click="deleteProject()">Delete</Button>
+			<Button @click="delProject($event)">Delete</Button>
 		</template>
 	</Card>
 </template>
